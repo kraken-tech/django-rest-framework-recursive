@@ -1,3 +1,6 @@
+import sys
+from copy import deepcopy
+
 from django.db import models
 from rest_framework import serializers
 from rest_framework_recursive.fields import RecursiveField
@@ -20,7 +23,7 @@ class ManyNullSerializer(serializers.Serializer):
 
 class PingSerializer(serializers.Serializer):
     ping_id = serializers.IntegerField()
-    pong = RecursiveField('PongSerializer', required=False)
+    pong = RecursiveField("PongSerializer", required=False)
 
 
 class PongSerializer(serializers.Serializer):
@@ -29,19 +32,16 @@ class PongSerializer(serializers.Serializer):
 
 
 class SillySerializer(serializers.Serializer):
-    name = RecursiveField(
-        'rest_framework.fields.CharField', max_length=5)
-    blankable = RecursiveField(
-        'rest_framework.fields.CharField', allow_blank=True)
-    nullable = RecursiveField(
-        'rest_framework.fields.CharField', allow_null=True)
-    links = RecursiveField('LinkSerializer')
+    name = RecursiveField("rest_framework.fields.CharField", max_length=5)
+    blankable = RecursiveField("rest_framework.fields.CharField", allow_blank=True)
+    nullable = RecursiveField("rest_framework.fields.CharField", allow_null=True)
+    links = RecursiveField("LinkSerializer")
     self = RecursiveField(required=False)
 
 
 class RecursiveModel(models.Model):
     name = models.CharField(max_length=255)
-    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE)
+    parent = models.ForeignKey("self", null=True, on_delete=models.CASCADE)
 
 
 class RecursiveModelSerializer(serializers.ModelSerializer):
@@ -49,36 +49,75 @@ class RecursiveModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecursiveModel
-        fields = ('name', 'parent')
+        fields = ("name", "parent")
 
 
 class TestRecursiveField:
     @staticmethod
     def serialize(serializer_class, value):
+        def _recursively_populate_nullable_field(serializer, instance_type):
+            """
+            Recursively populate the nullable fields with None, this allows
+            us to test for newer versions of DRF.
+            """
+            for key, val in instance_type().get_fields().items():
+                # If the field is recursive, step further
+                if isinstance(val, RecursiveField):
+                    if val.to is not None:
+                        pass
+                    elif serializer.get(key) is None:
+                        # If the field is not set, explicitly set it to None
+                        serializer[key] = None
+                    elif isinstance(serializer[key], list):
+                        serializer[key] = [
+                            _recursively_populate_nullable_field(
+                                serializer_item, instance_type
+                            )
+                            for serializer_item in serializer[key]
+                        ]
+                    else:
+                        # Step further until we get to a leaf
+                        serializer[key] = _recursively_populate_nullable_field(
+                            serializer[key], instance_type
+                        )
+
+            return serializer
+
         serializer = serializer_class(value)
 
-        assert serializer.data == value, \
-            'serialized data does not match input'
+        # We need to be able to populate nullable fields with None in the payload
+        # this needs to be done recursively
+        if sys.version_info <= (3, 6):
+            assert serializer.data == value, "serialized data does not match input"
+        else:
+            updated_payload = _recursively_populate_nullable_field(
+                value, serializer_class
+            )
+            assert (
+                serializer.data == updated_payload
+            ), "serialized data does not match input"
 
     @staticmethod
     def deserialize(serializer_class, data):
         serializer = serializer_class(data=data)
 
-        assert serializer.is_valid(), \
-            'cannot validate on deserialization: %s' % dict(serializer.errors)
-        assert serializer.validated_data == data, \
-            'deserialized data does not match input'
+        assert serializer.is_valid(), "cannot validate on deserialization: %s" % dict(
+            serializer.errors
+        )
+        assert (
+            serializer.validated_data == data
+        ), "deserialized data does not match input"
 
     def test_link_serializer(self):
         value = {
-            'name': 'first',
-            'next': {
-                'name': 'second',
-                'next': {
-                    'name': 'third',
-                    'next': None,
-                }
-            }
+            "name": "first",
+            "next": {
+                "name": "second",
+                "next": {
+                    "name": "third",
+                    "next": None,
+                },
+            },
         }
 
         self.serialize(LinkSerializer, value)
@@ -86,14 +125,17 @@ class TestRecursiveField:
 
     def test_node_serializer(self):
         value = {
-            'name': 'root',
-            'children': [{
-                'name': 'first child',
-                'children': [],
-            }, {
-                'name': 'second child',
-                'children': [],
-            }]
+            "name": "root",
+            "children": [
+                {
+                    "name": "first child",
+                    "children": [],
+                },
+                {
+                    "name": "second child",
+                    "children": [],
+                },
+            ],
         }
 
         self.serialize(NodeSerializer, value)
@@ -103,20 +145,18 @@ class TestRecursiveField:
         """Test that allow_null is propagated when many=True"""
 
         # Children is omitted from the root node
-        value = {
-            'name': 'root'
-        }
+        value = {"name": "root"}
 
         self.serialize(ManyNullSerializer, value)
         self.deserialize(ManyNullSerializer, value)
 
         # Children is omitted from the child nodes
         value2 = {
-            'name': 'root',
-            'children':[
-                {'name': 'child1'},
-                {'name': 'child2'},
-            ]
+            "name": "root",
+            "children": [
+                {"name": "child1"},
+                {"name": "child2"},
+            ],
         }
 
         self.serialize(ManyNullSerializer, value2)
@@ -124,13 +164,13 @@ class TestRecursiveField:
 
     def test_ping_pong(self):
         pong = {
-            'pong_id': 4,
-            'ping': {
-                'ping_id': 3,
-                'pong': {
-                    'pong_id': 2,
-                    'ping': {
-                        'ping_id': 1,
+            "pong_id": 4,
+            "ping": {
+                "ping_id": 3,
+                "pong": {
+                    "pong_id": 2,
+                    "ping": {
+                        "ping_id": 1,
                     },
                 },
             },
@@ -140,73 +180,72 @@ class TestRecursiveField:
 
     def test_validation(self):
         value = {
-            'name': 'good',
-            'blankable': '',
-            'nullable': None,
-            'links': {
-                'name': 'something',
-                'next': {
-                    'name': 'inner something',
-                    'next': None,
-                }
-            }
+            "name": "good",
+            "blankable": "",
+            "nullable": None,
+            "links": {
+                "name": "something",
+                "next": {
+                    "name": "inner something",
+                    "next": None,
+                },
+            },
         }
-        self.serialize(SillySerializer, value)
+        self.serialize(SillySerializer, deepcopy(value))
         self.deserialize(SillySerializer, value)
 
         max_length = {
-            'name': 'too long',
-            'blankable': 'not blank',
-            'nullable': 'not null',
-            'links': {
-                'name': 'something',
-                'next': None,
-            }
+            "name": "too long",
+            "blankable": "not blank",
+            "nullable": "not null",
+            "links": {
+                "name": "something",
+                "next": None,
+            },
         }
         serializer = SillySerializer(data=max_length)
-        assert not serializer.is_valid(), \
-            'validation should fail due to name too long'
+        assert not serializer.is_valid(), "validation should fail due to name too long"
 
         nulled_out = {
-            'name': 'good',
-            'blankable': None,
-            'nullable': 'not null',
-            'links': {
-                'name': 'something',
-                'next': None,
-            }
+            "name": "good",
+            "blankable": None,
+            "nullable": "not null",
+            "links": {
+                "name": "something",
+                "next": None,
+            },
         }
         serializer = SillySerializer(data=nulled_out)
-        assert not serializer.is_valid(), \
-            'validation should fail due to null field'
+        assert not serializer.is_valid(), "validation should fail due to null field"
 
         way_too_long = {
-            'name': 'good',
-            'blankable': '',
-            'nullable': None,
-            'links': {
-                'name': 'something',
-                'next': {
-                    'name': 'inner something that is much too long',
-                    'next': None,
-                }
-            }
+            "name": "good",
+            "blankable": "",
+            "nullable": None,
+            "links": {
+                "name": "something",
+                "next": {
+                    "name": "inner something that is much too long",
+                    "next": None,
+                },
+            },
         }
         serializer = SillySerializer(data=way_too_long)
-        assert not serializer.is_valid(), \
-            'validation should fail on inner link validation'
+        assert (
+            not serializer.is_valid()
+        ), "validation should fail on inner link validation"
 
     def test_model_serializer(self):
-        one = RecursiveModel(name='one')
-        two = RecursiveModel(name='two', parent=one)
+        one = RecursiveModel(name="one")
+        two = RecursiveModel(name="two", parent=one)
 
         # serialization
         representation = {
-            'name': 'two',
-            'parent': {
-                'name': 'one',
-                'parent': None,
-            }
+            "name": "two",
+            "parent": {
+                "name": "one",
+                "parent": None,
+            },
         }
 
         s = RecursiveModelSerializer(two)
@@ -219,5 +258,5 @@ class TestRecursiveField:
         """RecursiveField.__init__ introspect the parent constructor to pass
         kwargs properly. default is used used here to verify that the
         argument is properly passed to the super Field."""
-        field = RecursiveField(default='a default value')
-        assert field.default == 'a default value'
+        field = RecursiveField(default="a default value")
+        assert field.default == "a default value"
