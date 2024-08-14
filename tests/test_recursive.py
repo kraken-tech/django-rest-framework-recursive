@@ -1,4 +1,3 @@
-import sys
 from copy import deepcopy
 
 from django.db import models
@@ -55,7 +54,7 @@ class RecursiveModelSerializer(serializers.ModelSerializer):
 class TestRecursiveField:
     @staticmethod
     def serialize(serializer_class, value):
-        def _recursively_populate_nullable_field(serializer, instance_type):
+        def _recursively_populate_nullable_fields(serializer, instance_type):
             """
             Recursively populate the nullable fields with None, this allows
             us to test for newer versions of DRF.
@@ -70,14 +69,14 @@ class TestRecursiveField:
                         serializer[key] = None
                     elif isinstance(serializer[key], list):
                         serializer[key] = [
-                            _recursively_populate_nullable_field(
+                            _recursively_populate_nullable_fields(
                                 serializer_item, instance_type
                             )
                             for serializer_item in serializer[key]
                         ]
                     else:
                         # Step further until we get to a leaf
-                        serializer[key] = _recursively_populate_nullable_field(
+                        serializer[key] = _recursively_populate_nullable_fields(
                             serializer[key], instance_type
                         )
 
@@ -85,17 +84,10 @@ class TestRecursiveField:
 
         serializer = serializer_class(value)
 
-        # We need to be able to populate nullable fields with None in the payload
-        # this needs to be done recursively
-        if sys.version_info <= (3, 6):
-            assert serializer.data == value, "serialized data does not match input"
-        else:
-            updated_payload = _recursively_populate_nullable_field(
-                value, serializer_class
-            )
-            assert (
-                serializer.data == updated_payload
-            ), "serialized data does not match input"
+        updated_payload = _recursively_populate_nullable_fields(value, serializer_class)
+        assert (
+            serializer.data == updated_payload
+        ), "serialized data does not match input"
 
     @staticmethod
     def deserialize(serializer_class, data):
