@@ -2,7 +2,8 @@ from copy import deepcopy
 
 from django.db import models
 from rest_framework import serializers
-from rest_framework_recursive.fields import RecursiveField
+
+from kraken.django_rest_framework_recursive.fields import RecursiveField
 
 
 class LinkSerializer(serializers.Serializer):
@@ -69,9 +70,7 @@ class TestRecursiveField:
                         serializer[key] = None
                     elif isinstance(serializer[key], list):
                         serializer[key] = [
-                            _recursively_populate_nullable_fields(
-                                serializer_item, instance_type
-                            )
+                            _recursively_populate_nullable_fields(serializer_item, instance_type)
                             for serializer_item in serializer[key]
                         ]
                     else:
@@ -85,9 +84,7 @@ class TestRecursiveField:
         serializer = serializer_class(value)
 
         updated_payload = _recursively_populate_nullable_fields(value, serializer_class)
-        assert (
-            serializer.data == updated_payload
-        ), "serialized data does not match input"
+        assert serializer.data == updated_payload, "serialized data does not match input"
 
     @staticmethod
     def deserialize(serializer_class, data):
@@ -96,9 +93,7 @@ class TestRecursiveField:
         assert serializer.is_valid(), "cannot validate on deserialization: %s" % dict(
             serializer.errors
         )
-        assert (
-            serializer.validated_data == data
-        ), "deserialized data does not match input"
+        assert serializer.validated_data == data, "deserialized data does not match input"
 
     def test_link_serializer(self):
         value = {
@@ -223,9 +218,7 @@ class TestRecursiveField:
             },
         }
         serializer = SillySerializer(data=way_too_long)
-        assert (
-            not serializer.is_valid()
-        ), "validation should fail on inner link validation"
+        assert not serializer.is_valid(), "validation should fail on inner link validation"
 
     def test_model_serializer(self):
         one = RecursiveModel(name="one")
