@@ -1,20 +1,29 @@
-*.pyc
-*.db
-*~
-.*
+# Python byte-code
+__pycache__/
+*.py[cod]
 
-html/
-htmlcov/
-coverage/
+# Distribution / packaging
 build/
 dist/
 *.egg-info/
 MANIFEST
+*.whl
 
+# Linting
+.mypy_cache/
+.import_linter_cache/
+
+# Testing
+.pytest_cache/
+
+# Environments
+.venv/
+.direnv/
+.envrc
 bin/
 include/
 lib/
 local/
 
-!.gitignore
-!.travis.yml
+# Environment variables
+.env
