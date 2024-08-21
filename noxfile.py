@@ -28,6 +28,7 @@ def temp_lock_file() -> Generator[IO[str], None, None]:
 
 
 valid_version_combinations = [
+    # Python 3.10
     ("3.10", "django>=3.2,<3.3", "djangorestframework>=3.12,<3.13"),
     ("3.10", "django>=3.2,<3.3", "djangorestframework>=3.13,<3.14"),
     ("3.10", "django>=3.2,<3.3", "djangorestframework>=3.14,<3.15"),
@@ -36,6 +37,13 @@ valid_version_combinations = [
     ("3.10", "django>=4.1,<4.2", "djangorestframework>=3.14,<3.15"),
     ("3.10", "django>=4.2,<4.3", "djangorestframework>=3.14,<3.15"),
     ("3.10", "django>=4.2,<4.3", "djangorestframework>=3.15,<3.16"),
+    # Python 3.11
+    ("3.11", "django>=4.1,<4.2", "djangorestframework>=3.14,<3.15"),
+    ("3.11", "django>=4.1,<4.2", "djangorestframework>=3.15,<3.16"),
+    ("3.11", "django>=4.2,<4.3", "djangorestframework>=3.14,<3.15"),
+    ("3.11", "django>=4.2,<4.3", "djangorestframework>=3.15,<3.16"),
+    ("3.11", "django>=5.0,<5.1", "djangorestframework>=3.14,<3.15"),
+    ("3.11", "django>=5.0,<5.1", "djangorestframework>=3.15,<3.16"),
 ]
 
 

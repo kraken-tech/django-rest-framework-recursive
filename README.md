@@ -34,8 +34,8 @@ Further use cases are documented in the tests, see [**here**][tests] for more us
 
 This package supports:
 
-- Python 3.10
-- Django 3.2, 4.0, 4.1, 4.2
+- Python 3.10, 3.11
+- Django 3.2, 4.0, 4.1, 4.2, 5.0
 - Django Rest Framework 3.12, 3.13, 3.14, 3.15
 
 For an exact list of tested version combinations, see the `valid_version_combinations` set in the [noxfile](./noxfile.py)
