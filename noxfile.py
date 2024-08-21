@@ -27,30 +27,20 @@ def temp_lock_file() -> Generator[IO[str], None, None]:
         yield f
 
 
+valid_version_combinations = [
+    ("3.10", "django>=3.2,<3.3", "djangorestframework>=3.12,<3.13"),
+    ("3.10", "django>=3.2,<3.3", "djangorestframework>=3.13,<3.14"),
+    ("3.10", "django>=3.2,<3.3", "djangorestframework>=3.14,<3.15"),
+    ("3.10", "django>=4.0,<4.1", "djangorestframework>=3.13,<3.14"),
+    ("3.10", "django>=4.0,<4.1", "djangorestframework>=3.14,<3.15"),
+    ("3.10", "django>=4.1,<4.2", "djangorestframework>=3.14,<3.15"),
+    ("3.10", "django>=4.2,<4.3", "djangorestframework>=3.14,<3.15"),
+    ("3.10", "django>=4.2,<4.3", "djangorestframework>=3.15,<3.16"),
+]
+
+
 @nox.session()
-@nox.parametrize(
-    "drf_version",
-    [
-        nox.param("djangorestframework>=3.13,<3.14", id="drf=3.13"),
-        nox.param("djangorestframework>=3.14,<3.15", id="drf=3.14"),
-        nox.param("djangorestframework>=3.15,<3.16", id="drf=3.15"),
-    ],
-)
-@nox.parametrize(
-    "django_version",
-    [
-        nox.param("django>=3.2,django<3.3", id="django=3.2.X"),
-        nox.param("django>=4.0,django<4.1", id="django=4.0.X"),
-        nox.param("django>=4.1,django<4.2", id="django=4.1.X"),
-        nox.param("django>=4.2,django<4.3", id="django=4.2.X"),
-    ],
-)
-@nox.parametrize(
-    "python",
-    [
-        nox.param("3.10", id="python3.10"),
-    ],
-)
+@nox.parametrize("python, django_version, drf_version", valid_version_combinations)
 def tests(session: nox.Session, django_version: str, drf_version: str) -> None:
     """
     Run the test suite.
@@ -60,6 +50,9 @@ def tests(session: nox.Session, django_version: str, drf_version: str) -> None:
         # It's easy to add more constraints here if needed.
         constraints_file.write(f"{django_version}\n")
         constraints_file.write(f"{drf_version}\n")
+        constraints_file.write("pytest-django==4.7.0\n")
+        constraints_file.write("pytest==8.3.2\n")
+        constraints_file.flush()
 
         # Compile a new development lock file with the additional package constraints from this
         # session. Use a unique lock file name to avoid session pollution.
@@ -85,4 +78,7 @@ def tests(session: nox.Session, django_version: str, drf_version: str) -> None:
     if "CIRCLECI" in os.environ:
         commands.append(f"--junitxml=test-results/junit.{session.name}.xml")
 
-    session.run(*commands, *session.posargs)
+    session.run(
+        *commands,
+        *session.posargs,
+    )

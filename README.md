@@ -1,4 +1,4 @@
-****# Django REST Framework Recursive (Fork)
+# Django REST Framework Recursive (Fork)
 
 This repository is the friendly fork of the original [django-rest-framework-recursive](https://github.com/heywbj/django-rest-framework-recursive) by [heywbj](https://github.com/heywbj). As the original repo is no longer being actively maintained, we've friendly forked it here to undertake maintenance for modern versions of Python, Django, and Django Rest Framework.
 
@@ -17,7 +17,7 @@ class TreeSerializer(serializers.Serializer):
     children = serializers.ListField(child=RecursiveField())
 ```
 
-### #Linked List Recursion
+### Linked List Recursion
 ```python
 from rest_framework import serializers
 from django_rest_framework_recursive.fields import RecursiveField
@@ -36,7 +36,9 @@ This package supports:
 
 - Python 3.10
 - Django 3.2, 4.0, 4.1, 4.2
-- Django Rest Framework 3.13, 3.14, 3.15
+- Django Rest Framework 3.12, 3.13, 3.14, 3.15
+
+For an exact list of tested version combinations, see the `valid_version_combinations` set in the [noxfile](./noxfile.py)
 
 During development you will also need:
 
