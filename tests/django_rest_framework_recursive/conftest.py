@@ -1,4 +1,5 @@
 def pytest_configure():
+    import django
     from django.conf import settings
 
     settings.configure(
@@ -7,7 +8,6 @@ def pytest_configure():
         SITE_ID=1,
         SECRET_KEY="not very secret in tests",
         USE_I18N=True,
-        USE_L10N=True,
         STATIC_URL="/static/",
         ROOT_URLCONF="tests.urls",
         TEMPLATE_LOADERS=(
@@ -41,6 +41,10 @@ def pytest_configure():
             "django.contrib.auth.hashers.CryptPasswordHasher",
         ),
     )
+
+    if django.get_version() < "4.0":
+        # This setting has been deprecated for Django 4.0
+        settings.USE_L10N = True
 
     try:
         import oauth_provider  # NOQA
