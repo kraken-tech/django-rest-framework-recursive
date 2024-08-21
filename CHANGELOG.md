@@ -9,9 +9,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- Tested support for Python 3.10
-- Tested support for Django versions 3.2 -> 4.2
-- Tested support for Django REST Framework versions 3.13 -> 3.15
+- Tested support for Python 3.10 -> 3.11
+- Tested support for Django versions 3.2 -> 5.0
+- Tested support for Django REST Framework versions 3.12 -> 3.15
 - Development support using MyPy, Ruff, and UV
 - Pre-commit set-up to format before code is pushed
 
