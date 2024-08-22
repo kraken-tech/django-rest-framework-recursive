@@ -28,8 +28,8 @@ name = "django-rest-framework-recursive"
 # This should match the version in the [tool.bumpversion] section.
 version = "0.1.0"
 dependencies = [
-    "Django>=3.2",
-    "djangorestframework>=3.13.0",
+    "django>=3.2",
+    "djangorestframework>=3.12.0",
     "pytest-django==4.7.0",
     "pytest==8.3.2",
     "pytest-cov",
