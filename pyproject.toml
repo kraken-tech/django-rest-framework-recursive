@@ -22,7 +22,7 @@ where = ["src"]
 # -------
 
 [project]
-name = "django-rest-framework-recursive"
+name = "drf-recursive"
 
 # Do not manually edit the version, use `make version_{type}` instead.
 # This should match the version in the [tool.bumpversion] section.

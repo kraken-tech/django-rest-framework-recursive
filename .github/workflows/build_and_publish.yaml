@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/django-rest-framework-recursive
+      url: https://pypi.org/p/drf-recursive
     timeout-minutes: 5
 
     permissions:
