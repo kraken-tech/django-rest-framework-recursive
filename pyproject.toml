@@ -23,6 +23,7 @@ where = ["src"]
 
 [project]
 name = "drf-recursive"
+readme = "README.md"
 
 # Do not manually edit the version, use `make version_{type}` instead.
 # This should match the version in the [tool.bumpversion] section.

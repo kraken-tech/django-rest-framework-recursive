@@ -38,7 +38,7 @@ This package supports:
 - Django 3.2, 4.0, 4.1, 4.2, 5.0
 - Django Rest Framework 3.12, 3.13, 3.14, 3.15
 
-For an exact list of tested version combinations, see the `valid_version_combinations` set in the [noxfile](./noxfile.py)
+For an exact list of tested version combinations, see the `valid_version_combinations` set in the [noxfile](https://github.com/kraken-tech/django-rest-framework-recursive/blob/master/noxfile.py)
 
 During development you will also need:
 
