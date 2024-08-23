@@ -50,7 +50,7 @@ During development you will also need:
 Install using `pip`...
 
 ```
-pip install django-rest-framework-recursive
+pip install drf-recursive
 ```
 
 ## Local development
