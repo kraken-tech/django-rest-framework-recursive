@@ -9,9 +9,9 @@ asgiref==3.8.1
 bracex==2.5
     # via wcmatch
 build==1.2.1
-    # via django-rest-framework-recursive (pyproject.toml)
+    # via drf-recursive (pyproject.toml)
 bump-my-version==0.26.0
-    # via django-rest-framework-recursive (pyproject.toml)
+    # via drf-recursive (pyproject.toml)
 click==8.1.7
     # via
     #   bump-my-version
@@ -24,10 +24,10 @@ distlib==0.3.8
     # via virtualenv
 django==5.1
     # via
-    #   django-rest-framework-recursive (pyproject.toml)
+    #   drf-recursive (pyproject.toml)
     #   djangorestframework
 djangorestframework==3.15.2
-    # via django-rest-framework-recursive (pyproject.toml)
+    # via drf-recursive (pyproject.toml)
 exceptiongroup==1.2.2
     # via pytest
 filelock==3.15.4
@@ -39,11 +39,11 @@ markdown-it-py==3.0.0
 mdurl==0.1.2
     # via markdown-it-py
 mypy==1.11.1
-    # via django-rest-framework-recursive (pyproject.toml)
+    # via drf-recursive (pyproject.toml)
 mypy-extensions==1.0.0
     # via mypy
 nox==2024.4.15
-    # via django-rest-framework-recursive (pyproject.toml)
+    # via drf-recursive (pyproject.toml)
 packaging==24.1
     # via
     #   build
@@ -69,13 +69,13 @@ pyproject-hooks==1.1.0
     # via build
 pytest==8.3.2
     # via
-    #   django-rest-framework-recursive (pyproject.toml)
+    #   drf-recursive (pyproject.toml)
     #   pytest-cov
     #   pytest-django
 pytest-cov==5.0.0
-    # via django-rest-framework-recursive (pyproject.toml)
+    # via drf-recursive (pyproject.toml)
 pytest-django==4.7.0
-    # via django-rest-framework-recursive (pyproject.toml)
+    # via drf-recursive (pyproject.toml)
 python-dotenv==1.0.1
     # via pydantic-settings
 questionary==2.0.1
@@ -87,7 +87,7 @@ rich==13.7.1
 rich-click==1.8.3
     # via bump-my-version
 ruff==0.6.1
-    # via django-rest-framework-recursive (pyproject.toml)
+    # via drf-recursive (pyproject.toml)
 sqlparse==0.5.1
     # via django
 tomli==2.0.1
