@@ -7,6 +7,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+- The package import semantics from `kraken.django_rest_framework_recursive` to `django_rest_framework_recursive`.
+- Links in the README.md file to be to the correct files in the repository.
+- The `pytest-django` version to be *minimum* `4.7.0` rather than *exactly* `4.7.0`.
+
+### Removed
+
 ## [0.2.0] - 2024-08-22
 
 ### Added

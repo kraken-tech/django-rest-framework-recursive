@@ -3,7 +3,7 @@ from copy import deepcopy
 from django.db import models
 from rest_framework import serializers
 
-from kraken.django_rest_framework_recursive.fields import RecursiveField
+from django_rest_framework_recursive.fields import RecursiveField
 
 
 class LinkSerializer(serializers.Serializer):

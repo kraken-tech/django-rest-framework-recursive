@@ -58,8 +58,8 @@ def tests(session: nox.Session, django_version: str, drf_version: str) -> None:
         # It's easy to add more constraints here if needed.
         constraints_file.write(f"{django_version}\n")
         constraints_file.write(f"{drf_version}\n")
-        constraints_file.write("pytest-django==4.7.0\n")
-        constraints_file.write("pytest==8.3.2\n")
+        constraints_file.write("pytest-django>=4.7.0\n")
+        constraints_file.write("pytest>=8.3.2\n")
         constraints_file.flush()
 
         # Compile a new development lock file with the additional package constraints from this
