@@ -7,6 +7,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+- Moved the dependencies for test packages (`pytest`, `pytest-django`, `pytest-cov`) into dev dependencies.
+
+### Removed
+
 ## [0.3.0] - 2024-08-28
 
 ### Added
