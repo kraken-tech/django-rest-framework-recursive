@@ -25,14 +25,8 @@ readme = "README.md"
 
 # Do not manually edit the version, use `make version_{type}` instead.
 # This should match the version in the [tool.bumpversion] section.
-version = "0.3.0"
-dependencies = [
-    "django>=3.2",
-    "djangorestframework>=3.12.0",
-    "pytest-django==4.7.0",
-    "pytest==8.3.2",
-    "pytest-cov",
-]
+version = "0.3.1"
+dependencies = ["django>=3.2", "djangorestframework>=3.12.0"]
 
 [project.urls]
 # See https://daniel.feldroy.com/posts/2023-08-pypi-project-urls-cheatsheet for
@@ -44,7 +38,9 @@ changelog = "https://github.com/kraken-tech/django-rest-framework-recursive/blob
 dev = [
     # Testing
     "pytest",
-    "nox",    # Install in virtualenv so Mypy has access to the package types.
+    "pytest-django>=4.7.0",
+    "pytest-cov",
+    "nox",                  # Install in virtualenv so Mypy has access to the package types.
 
     # Linting
     "ruff",
@@ -136,7 +132,7 @@ filterwarnings = "error"
 [tool.bumpversion]
 # Do not manually edit the version, use `make version_{type}` instead.
 # This should match the version in the [project] section.
-current_version = "0.3.0"
+current_version = "0.3.1"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 search = "{current_version}"
