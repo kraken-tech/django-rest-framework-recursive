@@ -34,7 +34,7 @@ Further use cases are documented in the tests, see [**here**][tests] for more us
 
 This package supports:
 
-- Python 3.10, 3.11
+- Python 3.10, 3.11, 3.12
 - Django 3.2, 4.0, 4.1, 4.2, 5.0, 5.1
 - Django Rest Framework 3.12, 3.13, 3.14, 3.15
 
