@@ -25,7 +25,7 @@ readme = "README.md"
 
 # Do not manually edit the version, use `make version_{type}` instead.
 # This should match the version in the [tool.bumpversion] section.
-version = "0.3.1"
+version = "0.4.0"
 dependencies = ["django>=3.2", "djangorestframework>=3.12.0"]
 
 [project.urls]
@@ -132,7 +132,7 @@ filterwarnings = "error"
 [tool.bumpversion]
 # Do not manually edit the version, use `make version_{type}` instead.
 # This should match the version in the [project] section.
-current_version = "0.3.1"
+current_version = "0.4.0"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 search = "{current_version}"
