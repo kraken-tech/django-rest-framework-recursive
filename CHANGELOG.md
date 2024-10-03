@@ -7,6 +7,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- Tested support for Python 3.12
+- Tested support for Django versions 5.1
+
+### Changed
+
+### Removed
+
 ## [0.3.1] - 2024-09-03
 
 ### Added
