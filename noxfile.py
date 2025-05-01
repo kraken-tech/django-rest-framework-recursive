@@ -45,6 +45,9 @@ valid_version_combinations = [
     ("3.11", "django>=5.0,<5.1", "djangorestframework>=3.14,<3.15"),
     ("3.11", "django>=5.0,<5.1", "djangorestframework>=3.15,<3.16"),
     ("3.11", "django>=5.1,<5.2", "djangorestframework>=3.15,<3.16"),
+    ("3.11", "django>=5.1,<5.2", "djangorestframework>=3.16,<3.17"),
+    ("3.11", "django>=5.2,<5.3", "djangorestframework>=3.15,<3.16"),
+    ("3.11", "django>=5.2,<5.3", "djangorestframework>=3.16,<3.17"),
     # Python 3.12
     ("3.12", "django>=4.1,<4.2", "djangorestframework>=3.14,<3.15"),
     ("3.12", "django>=4.1,<4.2", "djangorestframework>=3.15,<3.16"),
